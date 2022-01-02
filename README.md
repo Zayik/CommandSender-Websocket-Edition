@@ -12,9 +12,6 @@
 - code written in Javascript
 - cross-platform (macOS, Windows)
 
-![](screenshot.png)
-
-
 # Installation
 
 In the Release folder, you can find the file `com.biffmasterzay.commandsender.streamDeckPlugin`. If you double-click this file on your machine, Stream Deck will install the plugin.
