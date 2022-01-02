@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>com.elgato.commandsender PI</title>
+    <link rel="stylesheet" href="sdpi.css">
+    <script src="common.js"></script>
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">IP Address</div>
+            <input class="sdpi-item-value" id="ipaddress" value="" onblur="sendValueToPlugin(event.target.value, 'setIpAddress')" placeholder="127.0.0.1" required pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Port</div>
+            <input class="sdpi-item-value" id="port" value="" onblur="sendValueToPlugin(event.target.value, 'setPort')" placeholder="12345" required pattern="[0-9]*">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Command Pressed</div>
+            <input class="sdpi-item-value" id="commandPressed" value="" onblur="sendValueToPlugin(event.target.value, 'setCommandPressed')" placeholder="CommandPressed">
+        </div>
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Command Released</div>
+            <input class="sdpi-item-value" id="commandReleased" value="" onblur="sendValueToPlugin(event.target.value, 'setCommandReleased')" placeholder="CommandReleased">
+        </div>
+    </div>
+
+    <script>
+        var pluginAction = null,
+            uuid = '',
+            ipAddressField = document.getElementById('ipaddress')
+            portField = document.getElementById('port')
+            commandPressedField = document.getElementById('commandPressed')
+            commandReleasedField = document.getElementById('commandReleased')
+
+        if ($SD) {
+            $SD.on('connected', function (jsonObj) {
+                uuid = jsonObj['uuid'];
+                if (jsonObj.hasOwnProperty('actionInfo')) {
+                    pluginAction = jsonObj.actionInfo['action'];
+                    
+                    let settings = jsonObj.actionInfo.payload.settings;
+                    if(settings.ipaddress)
+                    {
+                        ipAddressField.value = settings.ipaddress;
+                    }
+                    if(settings.port)
+                    {
+                        portField.value = settings.port;
+                    }
+                    if(settings.commandPressed)
+                    {
+                        commandPressedField.value = settings.commandPressed;
+                    }
+                    if(settings.commandReleased)
+                    {
+                        commandReleasedField.value = settings.commandReleased;
+                    }
+                }
+            });
+        };
+
+        /** you can also use ES6 syntax like so:
+        *
+        *   if ($SD) $SD.on('connected', (jsonObj) => { uuid=jsonObj.uuid }));
+        *    
+        */
+
+        function sendValueToPlugin(value, param) {
+
+            if ($SD && $SD.connection) {
+                var payload = {};
+                if (param) {
+                    payload[param] = value;
+                }
+                $SD.api.sendToPlugin(uuid, pluginAction, payload);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
