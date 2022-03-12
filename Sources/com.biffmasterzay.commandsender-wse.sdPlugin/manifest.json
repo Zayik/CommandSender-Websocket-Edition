@@ -10,7 +10,7 @@
           "FontSize": "12"
         }
       ],
-      "SupportedInMultiActions": false,
+      "SupportedInMultiActions": true,
       "Tooltip": "This lets you send a message via websocket to a server.",
       "UUID": "com.biffmasterzay.commandsender-wse"
     }

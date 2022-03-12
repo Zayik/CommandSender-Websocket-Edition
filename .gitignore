@@ -1,0 +1,7 @@
+_ReSharper.*/
+*.sdf
+bin/
+obj/
+Debug/...
+*.pdb
+.vs/
